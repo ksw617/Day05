@@ -19,19 +19,24 @@ struct Obj
 };
 
 const float G = 9.81;
+const float Vo = 20.0;
 
 int main()
 {
 	Obj player;
 	player.x = 10;
-	player.y = 0;
+	player.y = 25;
 	player.shape = "●";
 
 	float time = 0.0;
 	bool freeFall = false;
 
+	//점프 할때 player 높이
 	float h = 0.0;
-	//h = 0.5 * G * t * t;
+	//점프 하고 나서 부터 높이 변화량
+	float y = 0.0;
+	//y = Vo * t - 0.5 * G * t * t 
+	//y = -(Vo * t) + (0.5 * G * t * t);
 
 	while (true)
 	{
@@ -41,7 +46,9 @@ int main()
 		{
 			freeFall = true;
 			time = 0.0;
-			h = 0.0;
+			h = player.y;
+			y = 0.0;
+
 		}
 
 		if (freeFall)
@@ -49,21 +56,23 @@ int main()
 			// 구현
 			player.y++;
 
-			h = 0.5 * G * time * time;
-			player.y = h;
+			//y = -(Vo * t) + (0.5 * G * t * t);
+			y =-(Vo * time) + (0.5 * G * time * time);
+			player.y = h + y;
 
 			time += 0.1;
 
-			if (player.y >= 25)
+			if (player.y > 25)
 			{
 				freeFall = false;
+				player.y = h;
 			}
 		}
 
 		SetPosition(player.x, player.y);
 		printf(player.shape);
 
-		Sleep(50);
+		Sleep(10);
 	}
 
 	return 0;
