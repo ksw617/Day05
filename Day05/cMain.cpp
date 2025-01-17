@@ -19,7 +19,7 @@ struct Obj
 };
 
 const float G = 9.81;
-const float Vo = 20.0;
+const float Vo = 12.0;
 
 int main()
 {
@@ -42,6 +42,16 @@ int main()
 	{
 		system("cls");
 
+		if (GetAsyncKeyState(VK_LEFT))
+		{
+			player.x--;
+		}
+
+		if (GetAsyncKeyState(VK_RIGHT))
+		{
+			player.x++;
+		}
+
 		if (GetAsyncKeyState(VK_SPACE))
 		{
 			freeFall = true;
@@ -60,7 +70,7 @@ int main()
 			y =-(Vo * time) + (0.5 * G * time * time);
 			player.y = h + y;
 
-			time += 0.1;
+			time += 0.2;
 
 			if (player.y > 25)
 			{
@@ -72,7 +82,7 @@ int main()
 		SetPosition(player.x, player.y);
 		printf(player.shape);
 
-		Sleep(10);
+		Sleep(30);
 	}
 
 	return 0;
