@@ -18,7 +18,7 @@ int map[20][20] =
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -101,17 +101,30 @@ int main()
 
 		if (freeFall)
 		{
-			//y = -(Vo * t) + (0.5 * G * t * t);
-			y =-(Vo * time) + (0.5 * G * time * time);
-			player.y = h + y;
-
 			time += 0.2;
 
-			if (player.y > 18)
+			//y = -(Vo * t) + (0.5 * G * t * t);
+			float v = Vo * time;
+			float g = 0.5 * G * time * time;
+			y =-(v) + (g);
+
+			float beforeY = player.y;   // 이전 값
+			float afterY = h + y;		// 지금값
+		
+
+			for (int i = beforeY; i <= afterY; i++)
 			{
-				freeFall = false;
-				player.y = 18;
+
+				if (map[i+1][player.x] == 1)
+				{
+					freeFall = false;
+					afterY = i;
+					break;
+				}
 			}
+
+			player.y = afterY;
+
 		}
 
 		SetPosition(player.x, player.y);
