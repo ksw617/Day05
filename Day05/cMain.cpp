@@ -10,12 +10,6 @@ void SetPosition(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-enum Dir
-{
-	UP,
-	DOWN,
-};
-
 struct Obj
 {
 	int x;
@@ -24,66 +18,52 @@ struct Obj
 
 };
 
+const float G = 9.81;
+
 int main()
 {
 	Obj player;
 	player.x = 10;
-	player.y = 20;
+	player.y = 0;
 	player.shape = "¡Ü";
 
-	bool jump = false;
-	Dir upDown = UP;
+	float time = 0.0;
+	bool freeFall = false;
+
+	float h = 0.0;
+	//h = 0.5 * G * t * t;
 
 	while (true)
 	{
 		system("cls");
 
-		if (GetAsyncKeyState(VK_LEFT))
-		{
-			player.x--;
-		}
-		if (GetAsyncKeyState(VK_RIGHT))
-		{
-			player.x++;
-		}
-
 		if (GetAsyncKeyState(VK_SPACE))
 		{
-			upDown = UP;
-			jump = true;
+			freeFall = true;
+			time = 0.0;
+			h = 0.0;
 		}
 
-		if (jump)
+		if (freeFall)
 		{
-			if (player.y <= 15)
-			{
-				upDown = DOWN;
-			}
+			// ±¸Çö
+			player.y++;
 
-			if (player.y > 20)
-			{
-				player.y = 20;
-				jump = false;
-			}
+			h = 0.5 * G * time * time;
+			player.y = h;
 
-			//10
-			//11
-			if (upDown == DOWN)
+			time += 0.1;
+
+			if (player.y >= 25)
 			{
-				//11
-				player.y++;
-			}
-			else //upDown == DOWN
-			{
-				//11->10
-				player.y--;
+				freeFall = false;
 			}
 		}
 
 		SetPosition(player.x, player.y);
 		printf(player.shape);
 
-		Sleep(20);
+		Sleep(50);
 	}
 
 	return 0;
