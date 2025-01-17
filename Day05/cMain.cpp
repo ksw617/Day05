@@ -63,9 +63,6 @@ int main()
 
 		if (freeFall)
 		{
-			// ±¸Çö
-			player.y++;
-
 			//y = -(Vo * t) + (0.5 * G * t * t);
 			y =-(Vo * time) + (0.5 * G * time * time);
 			player.y = h + y;
